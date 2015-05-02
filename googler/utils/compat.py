@@ -1,5 +1,5 @@
 ##
-# Copyright (C) 2014 Christian Jurk <commx@commx.ws>
+# Copyright (C) 2015 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,22 +14,18 @@
 # limitations under the License.
 ##
 
-from googler import __version__ as _version
+import sys
 
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
 
-def get_user_agent():
-    """
-    Build a user agent string for HTTP requests.
+if PY2:
+    text_type = unicode
+    bytes_type = str
 
-    :return: User agent string
-    """
-    return 'Googler/{}'.format(_version)
+    from urllib import urlencode
+else:
+    text_type = str
+    bytes_type = bytes
 
-
-def get_headers():
-    """
-    Build a dict with default headers.
-
-    :return: dict
-    """
-    return {'User-agent': get_user_agent()}
+    from urllib.parse import urlencode

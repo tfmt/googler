@@ -1,6 +1,6 @@
+# coding: utf-8
+
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,8 +17,10 @@
 ##
 
 from Crypto.Cipher import AES
+from googler.utils import compat
 
 import base64
+
 
 def get_html(email, private_key, public_key, use_tls=True, label=None):
     """
@@ -71,6 +73,7 @@ def get_html(email, private_key, public_key, use_tls=True, label=None):
 
         return '%(a_begin)s%(label)s%(a_end)s' % context
 
+
 def get_url(email, private_key, public_key, use_tls=True):
     """
     Get Mailhide URL for a specific E-mail address.
@@ -93,6 +96,7 @@ def get_url(email, private_key, public_key, use_tls=True):
 
     return url
 
+
 def _decrypt_email_address(cipher_text, private_key):
     """
     Decrypt a encrypted E-mail address.
@@ -100,12 +104,16 @@ def _decrypt_email_address(cipher_text, private_key):
     :param private_key: Private key
     :return: E-mail address in plain text
     """
-    iv = bytes([0] * 16)
+    if compat.PY2:
+        iv = chr(0) * 16
+    else:
+        iv = bytes([0] * 16)
     key = base64.b16decode(private_key, casefold=True)
     cipher = AES.new(key, AES.MODE_CBC, iv)
     plain_text = _unpad(cipher.decrypt(cipher_text))
 
     return plain_text.decode('utf-8')
+
 
 def _encrypt_email_address(email, private_key):
     """
@@ -118,10 +126,14 @@ def _encrypt_email_address(email, private_key):
     key = base64.b16decode(private_key, casefold=True)
 
     # Create an initialization vector (16 times 0x00)
-    iv = bytes([0] * 16)
+    if compat.PY2:
+        iv = chr(0) * 16
+    else:
+        iv = bytes([0] * 16)
     cipher = AES.new(key, AES.MODE_CBC, iv)
 
     return cipher.encrypt(padded_email)
+
 
 def _pad(s):
     """
@@ -131,7 +143,13 @@ def _pad(s):
     :return: Padded string
     """
     x = AES.block_size - len(s) % AES.block_size
-    return s + (bytes([x]) * x)
+
+    if compat.PY2:
+        pad = chr(x) * x
+    else:
+        pad = bytes([x]) * x
+    return s + pad
+
 
 def _unpad(s):
     """
@@ -139,4 +157,7 @@ def _unpad(s):
     :param s: Padded string
     :return: Unpadded string
     """
-    return s[:-s[-1]]
+    if compat.PY2:
+        return s[:-ord(s[-1])]
+    else:
+        return s[:-s[-1]]

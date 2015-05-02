@@ -1,6 +1,4 @@
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +14,13 @@
 # limitations under the License.
 ##
 
-from ..utils.http import get_headers
+from googler.utils.http import get_headers
 
 import requests
 
 # Base URL for the Geocoding API
 API_URL = 'maps.googleapis.com/maps/api/geocode'
+
 
 class Geocode(object):
     def __init__(self, result):
@@ -32,6 +31,7 @@ class Geocode(object):
 
     def __repr__(self):
         return '<Geocode: %f %f>' % (self.latitude, self.longitude)
+
 
 class GeocodeResult(object):
     def __init__(self, data):
@@ -52,6 +52,7 @@ class GeocodeResult(object):
         if self.status != 'OK':
             return 0
         return len(self.results)
+
 
 def get_geocode(address, api_key, format='json', use_tls=True):
     """

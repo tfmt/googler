@@ -1,6 +1,4 @@
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,10 +14,11 @@
 # limitations under the License.
 ##
 
-from .. import geocoding
+from googler.maps import geocoding
 
 import json
 import unittest
+
 
 class TestEncryption(unittest.TestCase):
     """
@@ -97,6 +96,7 @@ class TestEncryption(unittest.TestCase):
             print(geocode)
 
         self.assertTrue(result)
+
 
 if __name__ == '__main__':
     unittest.main()

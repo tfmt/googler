@@ -1,6 +1,4 @@
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +14,10 @@
 # limitations under the License.
 ##
 
-from .. import mailhide
+from googler.recaptcha import mailhide
 
 import unittest
+
 
 class TestEncryption(unittest.TestCase):
     """
@@ -38,6 +37,7 @@ class TestEncryption(unittest.TestCase):
             enc = mailhide._encrypt_email_address(email, self.private_key)
             dec = mailhide._decrypt_email_address(enc, self.private_key)
             self.assertEqual(email, dec)
+
 
 if __name__ == '__main__':
     unittest.main()

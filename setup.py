@@ -1,6 +1,4 @@
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +18,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='googler',
-    version='1.0.0',
+    version='1.0.1',
     author='Christian Jurk',
     author_email='commx@commx.ws',
     description=('Google API Library for Python',),
@@ -37,6 +35,8 @@ setup(
         'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2.6',
+        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries'

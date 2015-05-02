@@ -1,6 +1,6 @@
+# coding: utf-8
+
 ##
-# Googler - Google API Library for Python
-#
 # Copyright (C) 2014 Christian Jurk <commx@commx.ws>
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,8 @@
 # limitations under the License.
 ##
 
-from ..utils.http import get_user_agent
+from googler.utils import compat
+from googler.utils.http import get_user_agent
 
 import requests
 
@@ -45,6 +46,7 @@ ERROR_CODES = {
     'recaptcha-not-reachable': 'reCAPTCHA server currently not available'
 }
 
+
 class RecaptchaError(ValueError):
     """
     A base exception for all reCAPTCHA related errors.
@@ -55,11 +57,13 @@ class RecaptchaError(ValueError):
     def __str__(self):
         return ERROR_CODES.get(self.error_code)
 
+
 class IncorrectRecaptchaSolution(RecaptchaError):
     """
     Raised when an invalid reCAPTCHA solution was provided.
     """
     pass
+
 
 class RecaptchaResponse(object):
     """
@@ -72,12 +76,17 @@ class RecaptchaResponse(object):
         self.is_valid = is_valid
         self.error_code = error_code
 
-    def __bool__(self):
-        return bool(self.is_valid)
+    if compat.PY3:
+        def __bool__(self):
+            return bool(self.is_valid)
+    else:
+        def __len__(self):
+            return 1 if self.is_valid else 0
 
     @property
     def error_message(self):
         return ERROR_CODES.get(self.error_code)
+
 
 def get_html(public_key, use_tls=True, error=None):
     """
@@ -100,6 +109,7 @@ def get_html(public_key, use_tls=True, error=None):
     }
 
     return DISPLAY_HTML % context
+
 
 def verify(challenge, response, private_key, remote_ip, use_tls=True):
     """
@@ -127,7 +137,7 @@ def verify(challenge, response, private_key, remote_ip, use_tls=True):
 
     try:
         r = requests.post(url, data=payload, headers=headers)
-    except requests.RequestException as e:
+    except requests.RequestException:
         raise RecaptchaError('recaptcha-not-reachable')
     else:
         response = r.text.split('\n')
@@ -142,6 +152,7 @@ def verify(challenge, response, private_key, remote_ip, use_tls=True):
             else:
                 raise RecaptchaError(error_code)
 
+
 def _build_api_url(use_tls=True):
     """
     Build the API URL.
@@ -151,6 +162,7 @@ def _build_api_url(use_tls=True):
     """
     scheme = 'https' if use_tls else 'http'
     return '%s://%s' % (scheme, API_URL)
+
 
 def _build_headers():
     """
