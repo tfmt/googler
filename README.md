@@ -2,6 +2,10 @@
 
 **googler** - A Python Library for Google APIs.
 
+**The development of this library has ceased. Please switch to [googleapis/google-api-python-client](https://github.com/googleapis/google-api-python-client).**
+
+The original purpose of this library was to provide library support for a subset of of the Google APIs to be used with Python 3.x at a time when Google had no plans to provide Python 3 support to its google-api-python-client. Things have changed since then: The google-api-python-client library now supports current Python versions (3.x). Please use it instead as it offer more functionality and is actively maintained. This repository will be kept archived.
+
 ## Requirements
 
 * Python 2.6, 2.7, 3.3, 3.4 or higher
@@ -18,13 +22,6 @@
 * `maps`
   * `geocoding` Google Maps Geocoding functionality
 
-## Status
-
-This is under active development. If you'd like to join hacking on this, please fork and do pull requests to it.
-
-## Why another Google API Library?
-
-The default Google Python API Client Library only works with Python 2.x. There are currently no plans to provide Python 3 support. Also, the library design is horrible IMO. Googler tries to provide a simple Library that provides basic API methods.
 
 ## License
 
